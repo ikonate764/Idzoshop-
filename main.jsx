@@ -10,18 +10,34 @@ const SUPABASE_ANON_KEY =
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 function money(value) {
-  return new Intl.NumberFormat("fr-FR").format(Number(value || 0)) + " FCFA";
+  return (
+    new Intl.NumberFormat("fr-FR").format(Number(value || 0)) +
+    " FCFA"
+  );
 }
 
 function App() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("");
+
+  const [user, setUser] = useState(null);
+
+  const [showAuth, setShowAuth] = useState(false);
+  const [authMode, setAuthMode] = useState("login");
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+
   const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     loadProducts();
+    loadSession();
 
     const savedCart = localStorage.getItem("idzoshop_cart");
 
@@ -32,11 +48,27 @@ function App() {
         setCart([]);
       }
     }
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
     localStorage.setItem("idzoshop_cart", JSON.stringify(cart));
   }, [cart]);
+
+  async function loadSession() {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    setUser(session?.user || null);
+  }
 
   async function loadProducts() {
     setLoading(true);
@@ -48,14 +80,73 @@ function App() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("Erreur produits :", error);
-      setMessage("Impossible de charger les produits.");
-      setProducts([]);
+      console.error(error);
+      setError("Impossible de charger les produits.");
     } else {
       setProducts(data || []);
     }
 
     setLoading(false);
+  }
+
+  async function handleAuth(e) {
+    e.preventDefault();
+
+    setAuthLoading(true);
+    setError("");
+    setMessage("");
+
+    if (!email || !password) {
+      setError("Entre ton email et ton mot de passe.");
+      setAuthLoading(false);
+      return;
+    }
+
+    if (authMode === "signup") {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+        },
+      });
+
+      if (error) {
+        setError(error.message);
+      } else if (data.session) {
+        setUser(data.user);
+        setShowAuth(false);
+        setMessage("Compte créé avec succès 🎉");
+      } else {
+        setMessage(
+          "Compte créé. Vérifie ton email pour confirmer ton compte."
+        );
+      }
+    } else {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setUser(data.user);
+        setShowAuth(false);
+        setMessage("Connexion réussie 👋");
+      }
+    }
+
+    setAuthLoading(false);
+  }
+
+  async function logout() {
+    await supabase.auth.signOut();
+
+    setUser(null);
+    setMessage("Tu es déconnecté.");
   }
 
   function addToCart(product) {
@@ -75,9 +166,7 @@ function App() {
 
     setMessage(`${product.name} ajouté au panier 🛒`);
 
-    setTimeout(() => {
-      setMessage("");
-    }, 2000);
+    setTimeout(() => setMessage(""), 2000);
   }
 
   function removeFromCart(id) {
@@ -131,9 +220,14 @@ function App() {
           />
         </div>
 
-        <div className="cart-icon">
-          🛒 {cartCount}
-        </div>
+        <button
+          className="account-button"
+          onClick={() => setShowAuth(true)}
+        >
+          👤 {user ? "Mon compte" : "Connexion"}
+        </button>
+
+        <div className="cart-icon">🛒 {cartCount}</div>
       </header>
 
       <main>
@@ -143,21 +237,29 @@ function App() {
         </section>
 
         {message && <div className="message">{message}</div>}
+        {error && <div className="error">{error}</div>}
+
+        {user && (
+          <section className="account-card">
+            <h2>👤 Mon compte</h2>
+            <p>
+              Connecté avec : <strong>{user.email}</strong>
+            </p>
+
+            <button className="logout-button" onClick={logout}>
+              Se déconnecter
+            </button>
+          </section>
+        )}
 
         <section className="products-section">
-          <h2>
-            {search ? "Résultats de recherche" : "Nos produits"}
-          </h2>
+          <h2>Nos produits</h2>
 
           {loading ? (
             <div className="loading">Chargement des produits...</div>
           ) : filteredProducts.length === 0 ? (
             <div className="empty">
               <h3>Aucun produit disponible</h3>
-              <p>
-                Ajoute tes produits dans la table{" "}
-                <strong>products</strong> de Supabase.
-              </p>
             </div>
           ) : (
             <div className="products-grid">
@@ -165,10 +267,7 @@ function App() {
                 <article className="product-card" key={product.id}>
                   <div className="product-image">
                     {product.image_url ? (
-                      <img
-                        src={product.image_url}
-                        alt={product.name}
-                      />
+                      <img src={product.image_url} alt={product.name} />
                     ) : (
                       <div className="no-image">🛍️</div>
                     )}
@@ -242,20 +341,80 @@ function App() {
               <strong>Total</strong>
               <strong>{money(cartTotal)}</strong>
             </div>
-
-            <button
-              className="checkout-button"
-              onClick={() =>
-                alert(
-                  "La prochaine étape sera de connecter le paiement et la commande réelle."
-                )
-              }
-            >
-              Passer la commande
-            </button>
           </section>
         )}
       </main>
+
+      {showAuth && (
+        <div className="modal">
+          <div className="auth-box">
+            <button
+              className="close-button"
+              onClick={() => setShowAuth(false)}
+            >
+              ×
+            </button>
+
+            <h2>
+              {authMode === "login"
+                ? "Connexion"
+                : "Créer un compte"}
+            </h2>
+
+            <form onSubmit={handleAuth}>
+              {authMode === "signup" && (
+                <input
+                  type="text"
+                  placeholder="Nom complet"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              )}
+
+              <input
+                type="email"
+                placeholder="Adresse email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <input
+                type="password"
+                placeholder="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              <button
+                className="auth-submit"
+                type="submit"
+                disabled={authLoading}
+              >
+                {authLoading
+                  ? "Chargement..."
+                  : authMode === "login"
+                  ? "Se connecter"
+                  : "Créer mon compte"}
+              </button>
+            </form>
+
+            <button
+              className="switch-auth"
+              onClick={() => {
+                setAuthMode(
+                  authMode === "login" ? "signup" : "login"
+                );
+                setError("");
+                setMessage("");
+              }}
+            >
+              {authMode === "login"
+                ? "Créer un nouveau compte"
+                : "J'ai déjà un compte"}
+            </button>
+          </div>
+        </div>
+      )}
 
       <footer>
         <p>© {new Date().getFullYear()} Idzoshop</p>
