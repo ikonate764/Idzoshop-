@@ -268,10 +268,22 @@ function App() {
                   <div className="product-image">
                     {product.image_url ? (
                       <img src={product.image_url} alt={product.name} />
-                    ) : (
-                      <div className="no-image">🛍️</div>
-                    )}
-                  </div>
+                  </div><div className="product-gallery">
+  <img
+    src="https://hhriagknzyvezbmrmqkb.supabase.co/storage/v1/object/public/products/1790456751367.png"
+    alt="Ceinture électrique - photo 1"
+  />
+
+  <img
+    src="https://hhriagknzyvezbmrmqkb.supabase.co/storage/v1/object/public/products/1790456758840.png"
+    alt="Ceinture électrique - photo 2"
+  />
+
+  <img
+    src="https://hhriagknzyvezbmrmqkb.supabase.co/storage/v1/object/public/products/1790456766261.png"
+    alt="Ceinture électrique - photo 3"
+  />
+</div>
 
                   <div className="product-info">
                     <h3>{product.name}</h3>
