@@ -151,7 +151,52 @@ const [orderLoading, setOrderLoading] = useState(false);
 
     setUser(null);
     setMessage("Tu es déconnecté.");
+  }async function handleOrder() {
+  if (!user) {
+    setMessage("Connecte-toi pour passer une commande.");
+    return;
   }
+
+  if (cart.length === 0) {
+    setMessage("Ton panier est vide.");
+    return;
+  }
+
+  if (!customerName.trim() || !customerPhone.trim() || !deliveryAddress.trim()) {
+    setMessage("Remplis ton nom, ton téléphone et ton adresse.");
+    return;
+  }
+
+  setOrderLoading(true);
+  setMessage("");
+
+  const { data, error } = await supabase.rpc("create_order", {
+    p_customer_name: customerName,
+    p_customer_phone: customerPhone,
+    p_delivery_address: `${deliveryAddress}${city ? `, ${city}` : ""}`,
+    p_items: cart.map((item) => ({
+      product_id: item.id,
+      quantity: Number(item.quantity),
+    })),
+  });
+
+  if (error) {
+    setMessage("Erreur : " + error.message);
+    setOrderLoading(false);
+    return;
+  }
+
+  setMessage(
+    `✅ Commande créée ! Numéro : ${data.order_number}`
+  );
+
+  setCart([]);
+  setCustomerName("");
+  setCustomerPhone("");
+  setDeliveryAddress("");
+  setCity("");
+  setOrderLoading(false);
+      }
 
   function addToCart(product) {
     setCart((current) => {
