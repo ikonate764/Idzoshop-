@@ -265,10 +265,7 @@ function App() {
             <div className="products-grid">
               {filteredProducts.map((product) => (
                 <article className="product-card" key={product.id}>
-                  <div className="product-image">
-                    {product.image_url ? (
-                      <img src={product.image_url} alt={product.name} />
-                  </div><div className="product-gallery">
+                  <div className="product-gallery">
   <img
     src="https://hhriagknzyvezbmrmqkb.supabase.co/storage/v1/object/public/products/1790456751367.png"
     alt="Ceinture électrique - photo 1"
