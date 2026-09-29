@@ -33,7 +33,11 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [authLoading, setAuthLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState("");const [customerName, setCustomerName] = useState("");
+const [customerPhone, setCustomerPhone] = useState("");
+const [deliveryAddress, setDeliveryAddress] = useState("");
+const [city, setCity] = useState("");
+const [orderLoading, setOrderLoading] = useState(false);
 
   useEffect(() => {
     loadProducts();
