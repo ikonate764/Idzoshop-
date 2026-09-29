@@ -402,9 +402,11 @@ const [orderLoading, setOrderLoading] = useState(false);
   <h3>📦 Passer la commande</h3>
 
   <input
-    type="text"
-    placeholder="Nom complet"
-  />
+  type="text"
+  placeholder="Nom complet"
+  value={customerName}
+  onChange={(e) => setCustomerName(e.target.value)}
+/>
 
   <input
     type="tel"
