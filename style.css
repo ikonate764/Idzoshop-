@@ -653,4 +653,83 @@ footer strong {
   .product-gallery img {
     height: 260px;
   }
+}.footer {
+  margin-top: 50px;
+  background: #101413;
+  color: white;
+  padding: 50px 20px 20px;
 }
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer-brand h2 {
+  margin: 0 0 15px;
+  font-size: 26px;
+  color: #ffffff;
+}
+
+.footer-brand p {
+  color: #b8c4bf;
+  line-height: 1.6;
+  margin: 7px 0;
+}
+
+.footer h3 {
+  margin: 0 0 18px;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.footer a {
+  display: block;
+  color: #b8c4bf;
+  text-decoration: none;
+  margin: 10px 0;
+  transition: 0.2s;
+}
+
+.footer a:hover {
+  color: #0f8f5f;
+}
+
+.footer p {
+  color: #b8c4bf;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid #29322f;
+  text-align: center;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 13px;
+  color: #8e9a95;
+}
+
+@media (max-width: 800px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 500px) {
+  .footer {
+    padding: 40px 18px 18px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+    }
