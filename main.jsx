@@ -38,7 +38,19 @@ const [customerPhone, setCustomerPhone] = useState("");
 const [deliveryAddress, setDeliveryAddress] = useState("");
 const [city, setCity] = useState("");
 const [orderLoading, setOrderLoading] = useState(false);const [orders, setOrders] = useState([]);
-const [showAdmin, setShowAdmin] = useState(false);
+const [showAdmin, setShowAdmin] = useState(false);async function loadOrders() {
+  const { data, error } = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    setMessage("Erreur lors du chargement des commandes : " + error.message);
+    return;
+  }
+
+  setOrders(data || []);
+}
 
   useEffect(() => {
     loadProducts();
