@@ -337,9 +337,27 @@ async function handleOrder() {
 
       <main>
         <section className="hero">
-          <h1>Bienvenue sur Idzoshop</h1>
-          <p>Ta boutique en ligne au Sénégal 🇸🇳</p>
-        </section>
+  <div className="hero-content">
+    <span className="hero-badge">🇸🇳 Boutique en ligne au Sénégal</span>
+
+    <h1>Vos achats en ligne, plus simples !</h1>
+
+    <p>
+      Des produits de qualité, aux meilleurs prix,
+      livrés directement chez vous.
+    </p>
+
+    <a href="#boutique" className="hero-button">
+      Découvrir la boutique →
+    </a>
+
+    <div className="hero-benefits">
+      <span>🚚 Livraison rapide</span>
+      <span>🔒 Paiement sécurisé</span>
+      <span>↩️ Retour facile</span>
+    </div>
+  </div>
+</section>
 
         {message && <div className="message">{message}</div>}
         {error && <div className="error">{error}</div>}
