@@ -617,7 +617,46 @@ async function handleOrder() {
           </section>
         )}
       </main>
+<footer className="footer">
+  <div className="footer-content">
 
+    <div className="footer-brand">
+      <h2>🛍️ Idzoshop</h2>
+      <p>Tout ce dont vous avez besoin, au meilleur prix.</p>
+      <p>🇸🇳 Votre boutique en ligne au Sénégal.</p>
+    </div>
+
+    <div>
+      <h3>Navigation</h3>
+      <a href="#accueil">Accueil</a>
+      <a href="#boutique">Boutique</a>
+      <a href="#promotions">Promotions</a>
+      <a href="#apropos">À propos</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <div>
+      <h3>Nos services</h3>
+      <a href="#boutique">Nos produits</a>
+      <a href="#livraison">Livraison</a>
+      <a href="#paiement">Paiement sécurisé</a>
+      <a href="#retour">Retour facile</a>
+    </div>
+
+    <div>
+      <h3>Contact</h3>
+      <p>📞 Service client</p>
+      <p>📧 Contactez-nous</p>
+      <p>🇸🇳 Sénégal</p>
+      <p>🎧 Disponible 7j/7</p>
+    </div>
+
+  </div>
+
+  <div className="footer-bottom">
+    <p>© 2026 Idzoshop — Tous droits réservés.</p>
+  </div>
+</footer>
       {showAuth && (
         <div className="modal">
           <div className="auth-box">
