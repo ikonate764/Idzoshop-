@@ -409,9 +409,11 @@ const [orderLoading, setOrderLoading] = useState(false);
 />
 
   <input
-    type="tel"
-    placeholder="Numéro de téléphone"
-  />
+  type="tel"
+  placeholder="Numéro de téléphone"
+  value={customerPhone}
+  onChange={(e) => setCustomerPhone(e.target.value)}
+/>
 
   <input
     type="text"
