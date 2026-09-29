@@ -388,8 +388,18 @@ async function handleOrder() {
           </p>
 
           <p>
-            <strong>Statut :</strong> {order.status}
-          </p>
+  <strong>Statut :</strong>
+  <select
+    value={order.status}
+    onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+  >
+    <option value="pending">En attente</option>
+    <option value="confirmed">Confirmée</option>
+    <option value="shipped">Expédiée</option>
+    <option value="delivered">Livrée</option>
+    <option value="cancelled">Annulée</option>
+  </select>
+</p>
 
           <p>
             <strong>Paiement :</strong> {order.payment_status}
