@@ -349,7 +349,35 @@ function App() {
             <div className="cart-total">
               <strong>Total</strong>
               <strong>{money(cartTotal)}</strong>
-            </div>
+            </div><div className="checkout">
+  <h3>📦 Passer la commande</h3>
+
+  <input
+    type="text"
+    placeholder="Nom complet"
+  />
+
+  <input
+    type="tel"
+    placeholder="Numéro de téléphone"
+  />
+
+  <input
+    type="text"
+    placeholder="Adresse de livraison"
+  />
+
+  <input
+    type="text"
+    placeholder="Ville"
+  />
+
+  <p>💵 Paiement à la livraison</p>
+
+  <button type="button">
+    Commander
+  </button>
+</div>
           </section>
         )}
       </main>
