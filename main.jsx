@@ -431,9 +431,9 @@ const [orderLoading, setOrderLoading] = useState(false);
 
   <p>💵 Paiement à la livraison</p>
 
-  <button type="button">
-    Commander
-  </button>
+  <button type="button" onClick={handleOrder} disabled={orderLoading}>
+  {orderLoading ? "Commande en cours..." : "Commander"}
+</button>
 </div>
           </section>
         )}
