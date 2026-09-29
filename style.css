@@ -346,4 +346,28 @@ footer strong {
   .product-gallery img {
     height: 280px;
   }
+    }.top-bar {
+  background: var(--green-dark);
+  color: white;
+  min-height: 38px;
+  padding: 8px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.top-bar span {
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .top-bar {
+    overflow-x: auto;
+    justify-content: flex-start;
+    font-size: 12px;
+    padding: 8px 15px;
+  }
     }
