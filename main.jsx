@@ -326,7 +326,14 @@ async function handleOrder() {
         </button>
 
         <div className="cart-icon">🛒 {cartCount}</div>
-      </header>
+      </header><nav className="main-nav">
+  <button className="categories-button">☰ Toutes les catégories</button>
+  <a href="#accueil">Accueil</a>
+  <a href="#boutique">Boutique</a>
+  <a href="#promotions">Promotions</a>
+  <a href="#apropos">À propos</a>
+  <a href="#contact">Contact</a>
+</nav>
 
       <main>
         <section className="hero">
