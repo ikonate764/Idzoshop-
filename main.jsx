@@ -310,7 +310,17 @@ const [showAdmin, setShowAdmin] = useState(false);async function loadOrders() {
 
             <button className="logout-button" onClick={logout}>
               Se déconnecter
-            </button>
+            </button>{user?.email === "idzoshop50@gmail.com" && (
+  <button
+    className="logout-button"
+    onClick={() => {
+      setShowAdmin(true);
+      loadOrders();
+    }}
+  >
+    📦 Voir les commandes
+  </button>
+)}
           </section>
         )}
 
