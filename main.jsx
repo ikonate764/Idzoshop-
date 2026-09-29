@@ -358,7 +358,23 @@ async function handleOrder() {
     </div>
   </div>
 </section>
+<section className="categories-section">
+  <div className="section-heading">
+    <h2>Nos catégories</h2>
+    <p>Découvrez nos différentes catégories</p>
+  </div>
 
+  <div className="categories-grid">
+    <div className="category-card">📱<span>Électronique</span></div>
+    <div className="category-card">👕<span>Mode</span></div>
+    <div className="category-card">🏠<span>Maison & Cuisine</span></div>
+    <div className="category-card">💄<span>Beauté & Santé</span></div>
+    <div className="category-card">⚽<span>Sport & Loisirs</span></div>
+    <div className="category-card">🧸<span>Enfants & Jouets</span></div>
+    <div className="category-card">🎒<span>Accessoires</span></div>
+    <div className="category-card">📞<span>Téléphonie</span></div>
+  </div>
+</section>
         {message && <div className="message">{message}</div>}
         {error && <div className="error">{error}</div>}
 
