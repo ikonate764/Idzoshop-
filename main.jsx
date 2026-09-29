@@ -164,7 +164,38 @@ const [showAdmin, setShowAdmin] = useState(false);async function loadOrders() {
 
     setUser(null);
     setMessage("Tu es déconnecté.");
-  }async function handleOrder() {
+  }
+
+async function updateOrderStatus(orderId, status) {
+  const { error } = await supabase.rpc("update_order_status", {
+    p_order_id: orderId,
+    p_status: status,
+  });
+
+  if (error) {
+    setMessage("Erreur : " + error.message);
+    return;
+  }
+
+  setMessage("✅ Statut de la commande mis à jour.");
+  loadOrders();
+}
+
+async function loadOrders() {
+  const { data, error } = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    setMessage("Erreur lors du chargement des commandes : " + error.message);
+    return;
+  }
+
+  setOrders(data || []);
+}
+
+async function handleOrder() {
   if (!user) {
     setMessage("Connecte-toi pour passer une commande.");
     return;
