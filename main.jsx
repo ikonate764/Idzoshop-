@@ -301,6 +301,11 @@ async function handleOrder() {
 
   return (
     <div className="app">
+    <div className="top-bar">
+  <span>🚚 Livraison rapide partout au Sénégal 🇸🇳</span>
+  <span>🛡 Paiement à la livraison ou en ligne</span>
+  <span>🎧 Service client disponible 7j/7</span>
+</div>
       <header className="header">
         <div className="logo">Idzoshop</div>
 
