@@ -508,7 +508,31 @@ async function handleOrder() {
               ))}
             </div>
           )}
-        </section>
+        </section><section className="service-strip">
+  <div>
+    <span>🚚</span>
+    <strong>Livraison rapide</strong>
+    <small>Partout au Sénégal</small>
+  </div>
+
+  <div>
+    <span>🔒</span>
+    <strong>Paiement sécurisé</strong>
+    <small>À la livraison ou en ligne</small>
+  </div>
+
+  <div>
+    <span>↩️</span>
+    <strong>Retour facile</strong>
+    <small>Selon nos conditions</small>
+  </div>
+
+  <div>
+    <span>🎧</span>
+    <strong>Service client</strong>
+    <small>Disponible 7j/7</small>
+  </div>
+</section>
 
         {cart.length > 0 && (
           <section className="cart-section">
