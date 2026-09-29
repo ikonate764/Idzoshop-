@@ -322,7 +322,52 @@ const [showAdmin, setShowAdmin] = useState(false);async function loadOrders() {
   </button>
 )}
           </section>
-        )}
+        )}{showAdmin && (
+  <section className="account-card">
+    <h2>📦 Commandes reçues</h2>
+
+    <button
+      className="logout-button"
+      onClick={() => setShowAdmin(false)}
+    >
+      Fermer
+    </button>
+
+    {orders.length === 0 ? (
+      <p>Aucune commande pour le moment.</p>
+    ) : (
+      orders.map((order) => (
+        <div key={order.id} className="order-card">
+          <h3>Commande {order.order_number}</h3>
+
+          <p>
+            <strong>Client :</strong> {order.customer_name}
+          </p>
+
+          <p>
+            <strong>Téléphone :</strong> {order.customer_phone}
+          </p>
+
+          <p>
+            <strong>Adresse :</strong> {order.delivery_address}
+          </p>
+
+          <p>
+            <strong>Total :</strong> {Number(order.total).toLocaleString()} FCFA
+          </p>
+
+          <p>
+            <strong>Statut :</strong> {order.status}
+          </p>
+
+          <p>
+            <strong>Paiement :</strong> {order.payment_status}
+          </p>
+        </div>
+      ))
+    )}
+  </section>
+)}
 
         <section className="products-section">
           <h2>Nos produits</h2>
