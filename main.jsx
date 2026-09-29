@@ -416,9 +416,11 @@ const [orderLoading, setOrderLoading] = useState(false);
 />
 
   <input
-    type="text"
-    placeholder="Adresse de livraison"
-  />
+  type="text"
+  placeholder="Adresse de livraison"
+  value={deliveryAddress}
+  onChange={(e) => setDeliveryAddress(e.target.value)}
+/>
 
   <input
     type="text"
