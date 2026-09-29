@@ -423,9 +423,11 @@ const [orderLoading, setOrderLoading] = useState(false);
 />
 
   <input
-    type="text"
-    placeholder="Ville"
-  />
+  type="text"
+  placeholder="Ville"
+  value={city}
+  onChange={(e) => setCity(e.target.value)}
+/>
 
   <p>💵 Paiement à la livraison</p>
 
