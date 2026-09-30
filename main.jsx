@@ -365,6 +365,72 @@ async function handleOrder() {
   </div>
 
   <div className="categories-grid">
+
+  <button
+    className="category-card"
+    onClick={() => setSearch("Électronique")}
+  >
+    📱
+    <span>Électronique</span>
+  </button>
+
+  <button
+    className="category-card"
+    onClick={() => setSearch("Mode")}
+  >
+    👕
+    <span>Mode</span>
+  </button>
+
+  <button
+    className="category-card"
+    onClick={() => setSearch("Maison")}
+  >
+    🏠
+    <span>Maison & Cuisine</span>
+  </button>
+
+  <button
+    className="category-card"
+    onClick={() => setSearch("Beauté")}
+  >
+    💄
+    <span>Beauté & Santé</span>
+  </button>
+
+  <button
+    className="category-card"
+    onClick={() => setSearch("Sport")}
+  >
+    ⚽
+    <span>Sport & Loisirs</span>
+  </button>
+
+  <button
+    className="category-card"
+    onClick={() => setSearch("Enfants")}
+  >
+    🧸
+    <span>Enfants & Jouets</span>
+  </button>
+
+  <button
+    className="category-card"
+    onClick={() => setSearch("Accessoires")}
+  >
+    🎒
+    <span>Accessoires</span>
+  </button>
+
+  <button
+    className="category-card"
+    onClick={() => setSearch("Téléphonie")}
+  >
+    📞
+    <span>Téléphonie</span>
+  </button>
+
+</div>
     <div className="category-card">📱<span>Électronique</span></div>
     <div className="category-card">👕<span>Mode</span></div>
     <div className="category-card">🏠<span>Maison & Cuisine</span></div>
