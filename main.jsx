@@ -397,7 +397,7 @@ return (
     🏠 <span>Maison & Cuisine</span>
   </button>
 
-  <button className="category-card" onClick={() => setSelectedCategory("beaute")}>
+  <button className="category-card" onClick={() => setSelectedCategory("beauté")}>
     💄 <span>Beauté & Santé</span>
   </button>
 
