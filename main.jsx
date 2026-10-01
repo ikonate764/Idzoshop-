@@ -275,7 +275,6 @@ async function handleOrder() {
     setCart((current) =>
       current.map((item) =>
         item.id === id ? { ...item, quantity } : item
-      )
       });
   
 
@@ -292,21 +291,7 @@ async function handleOrder() {
     product.categories?.name?.toLowerCase().includes(text)
   );
 });
-  if (
-  selectedCategory &&
-  product.categories?.slug !== selectedCategory
-) {
-  return false;
-  }
-    const text = search.toLowerCase();
-
-return (
-  product.name?.toLowerCase().includes(text) ||
-  product.description?.toLowerCase().includes(text) ||
-  product.categories?.name?.toLowerCase().includes(text) ||
-  product.categories?.slug?.toLowerCase().includes(text)
-);
-  });
+  
 
   const cartCount = cart.reduce(
     (total, item) => total + Number(item.quantity || 0),
