@@ -275,7 +275,7 @@ async function handleOrder() {
     setCart((current) =>
       current.map((item) =>
         item.id === id ? { ...item, quantity } : item
-      });
+      ));
         }
 
   const filteredProducts = products.filter((product) => {
