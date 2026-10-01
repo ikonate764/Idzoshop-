@@ -367,71 +367,41 @@ return (
   </div>
 
   <div className="categories-grid">
-
-  <button
-    className="category-card"
-    onClick={() => setSearch("Électronique")}
-  >
-    📱
-    <span>Électronique</span>
+  <button className="category-card" onClick={() => setSelectedCategory("electronique")}>
+    📱 <span>Électronique</span>
   </button>
 
-  <button
-    className="category-card"
-    onClick={() => setSearch("Mode")}
-  >
-    👕
-    <span>Mode</span>
+  <button className="category-card" onClick={() => setSelectedCategory("mode")}>
+    👕 <span>Mode</span>
   </button>
 
-  <button
-    className="category-card"
-    onClick={() => setSearch("Maison")}
-  >
-    🏠
-    <span>Maison & Cuisine</span>
+  <button className="category-card" onClick={() => setSelectedCategory("maison")}>
+    🏠 <span>Maison & Cuisine</span>
   </button>
 
-  <button
-    className="category-card"
-    onClick={() => setSearch("Beauté")}
-  >
-    💄
-    <span>Beauté & Santé</span>
+  <button className="category-card" onClick={() => setSelectedCategory("beaute")}>
+    💄 <span>Beauté & Santé</span>
   </button>
 
-  <button
-    className="category-card"
-    onClick={() => setSearch("Sport")}
-  >
-    ⚽
-    <span>Sport & Loisirs</span>
+  <button className="category-card" onClick={() => setSelectedCategory("sport")}>
+    ⚽ <span>Sport & Loisirs</span>
   </button>
 
-  <button
-    className="category-card"
-    onClick={() => setSearch("Enfants")}
-  >
-    🧸
-    <span>Enfants & Jouets</span>
+  <button className="category-card" onClick={() => setSelectedCategory("enfants")}>
+    🧸 <span>Enfants & Jouets</span>
   </button>
 
-  <button
-    className="category-card"
-    onClick={() => setSearch("Accessoires")}
-  >
-    🎒
-    <span>Accessoires</span>
+  <button className="category-card" onClick={() => setSelectedCategory("accessoires")}>
+    🎒 <span>Accessoires</span>
   </button>
 
-  <button
-    className="category-card"
-    onClick={() => setSearch("Téléphonie")}
-  >
-    📞
-    <span>Téléphonie</span>
+  <button className="category-card" onClick={() => setSelectedCategory("telephonie")}>
+    📞 <span>Téléphonie</span>
   </button>
 
+  <button className="category-card" onClick={() => setSelectedCategory("")}>
+    🛍️ <span>Tous les produits</span>
+  </button>
 </div>
     <div className="category-card">📱<span>Électronique</span></div>
     <div className="category-card">👕<span>Mode</span></div>
