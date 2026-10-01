@@ -279,9 +279,20 @@ async function handleOrder() {
   );
   }
 
-  const filteredProducts = products.filter((product) => {
+  const normalizeCategory = (value = "") =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+
+const filteredProducts = products.filter((product) => {
   if (selectedCategory !== "") {
-    return product.categories?.slug === selectedCategory;
+    const selected = normalizeCategory(selectedCategory);
+    const slug = normalizeCategory(product.categories?.slug);
+    const name = normalizeCategory(product.categories?.name);
+
+    return slug === selected || name === selected;
   }
 
   const text = search.toLowerCase();
