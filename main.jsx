@@ -406,15 +406,6 @@ async function handleOrder() {
     🛍️ <span>Tous les produits</span>
   </button>
 </div>
-    <div className="category-card">📱<span>Électronique</span></div>
-    <div className="category-card">👕<span>Mode</span></div>
-    <div className="category-card">🏠<span>Maison & Cuisine</span></div>
-    <div className="category-card">💄<span>Beauté & Santé</span></div>
-    <div className="category-card">⚽<span>Sport & Loisirs</span></div>
-    <div className="category-card">🧸<span>Enfants & Jouets</span></div>
-    <div className="category-card">🎒<span>Accessoires</span></div>
-    <div className="category-card">📞<span>Téléphonie</span></div>
-  </div>
 </section>
         {message && <div className="message">{message}</div>}
         {error && <div className="error">{error}</div>}
