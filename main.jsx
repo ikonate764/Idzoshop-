@@ -279,7 +279,12 @@ async function handleOrder() {
     );
   }
 
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = products.filter((product) => {if (
+  selectedCategory &&
+  product.categories?.slug !== selectedCategory
+) {
+  return false;
+  }
     const text = search.toLowerCase();
 
 return (
