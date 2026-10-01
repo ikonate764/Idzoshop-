@@ -282,10 +282,12 @@ async function handleOrder() {
   const filteredProducts = products.filter((product) => {
     const text = search.toLowerCase();
 
-    return (
-      product.name?.toLowerCase().includes(text) ||
-      product.description?.toLowerCase().includes(text)
-    );
+return (
+  product.name?.toLowerCase().includes(text) ||
+  product.description?.toLowerCase().includes(text) ||
+  product.categories?.name?.toLowerCase().includes(text) ||
+  product.categories?.slug?.toLowerCase().includes(text)
+);
   });
 
   const cartCount = cart.reduce(
