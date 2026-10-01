@@ -92,7 +92,7 @@ const [showAdmin, setShowAdmin] = useState(false);async function loadOrders() {
 
     const { data, error } = await supabase
       .from("products")
-.select("*, category_id")
+.select("*, categories(name, slug)")
       .eq("active", true)
       .order("created_at", { ascending: false });
 
