@@ -267,15 +267,15 @@ async function handleOrder() {
   }
 
   function changeQuantity(id, quantity) {
-    if (quantity <= 0) {
-      removeFromCart(id);
-      return;
-    }
+  if (quantity <= 0) {
+    removeFromCart(id);
+    return;
+  }
 
-    setCart((current) =>
-  current.map((item) =>
-    item.id === id ? { ...item, quantity } : item
-  )
+  setCart((current) =>
+    current.map((item) =>
+      item.id === id ? { ...item, quantity } : item
+    )
   );
   }
 
