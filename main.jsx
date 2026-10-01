@@ -279,7 +279,20 @@ async function handleOrder() {
     );
   }
 
-  const filteredProducts = products.filter((product) => {if (
+  const filteredProducts = products.filter((product) => {
+  if (selectedCategory !== "") {
+    return product.categories?.slug === selectedCategory;
+  }
+
+  const text = search.toLowerCase();
+
+  return (
+    product.name?.toLowerCase().includes(text) ||
+    product.description?.toLowerCase().includes(text) ||
+    product.categories?.name?.toLowerCase().includes(text)
+  );
+});
+  if (
   selectedCategory &&
   product.categories?.slug !== selectedCategory
 ) {
