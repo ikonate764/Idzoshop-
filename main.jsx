@@ -20,7 +20,7 @@ function App() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("");
-
+const [selectedCategory, setSelectedCategory] = useState("");
   const [user, setUser] = useState(null);
 
   const [showAuth, setShowAuth] = useState(false);
