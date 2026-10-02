@@ -515,18 +515,13 @@ const filteredProducts = products.filter((product) => {
                 <article className="product-card" key={product.id}>
                   <div className="product-gallery">
   <img
-    src="https://hhriagknzyvezbmrmqkb.supabase.co/storage/v1/object/public/products/1790456751367.png"
-    alt="Ceinture électrique - photo 1"
-  />
-
-  <img
-    src="https://hhriagknzyvezbmrmqkb.supabase.co/storage/v1/object/public/products/1790456758840.png"
-    alt="Ceinture électrique - photo 2"
-  />
-
-  <img
-    src="https://hhriagknzyvezbmrmqkb.supabase.co/storage/v1/object/public/products/1790456766261.png"
-    alt="Ceinture électrique - photo 3"
+    src={
+      product.image_url ||
+      product.image ||
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80"
+    }
+    alt={product.name || "Produit Idzoshop"}
+    loading="lazy"
   />
 </div>
 
