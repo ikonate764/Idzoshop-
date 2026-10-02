@@ -537,11 +537,12 @@ const filteredProducts = products.filter((product) => {
                     </strong>
 
                     <button
-                      className="add-button"
-                      onClick={() => addToCart(product)}
-                    >
-                      Ajouter au panier
-                    </button>
+  className="add-button"
+  onClick={() => addToCart(product)}
+  disabled={product.stock <= 0}
+>
+  {product.stock > 0 ? "Ajouter au panier" : "Rupture de stock"}
+</button>
                   </div>
                 </article>
               ))}
