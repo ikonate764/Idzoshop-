@@ -580,7 +580,7 @@ const filteredProducts = products.filter((product) => {
 </section>
 
         {cart.length > 0 && (
-          <section className="cart-section">
+          <section id="panier"className="cart-section">
             <h2>🛒 Mon panier</h2>
 
             {cart.map((item) => (
