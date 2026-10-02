@@ -505,7 +505,7 @@ const filteredProducts = products.filter((product) => {
   </section>
 )}
 
-        <section className="products-section">
+        <section id="boutique" className="products-section">
           <h2>Nos produits</h2>
 
           {loading ? (
