@@ -342,7 +342,12 @@ const filteredProducts = products.filter((product) => {
           👤 {user ? "Mon compte" : "Connexion"}
         </button>
 
-        <div className="cart-icon">🛒 {cartCount}</div>
+        <button
+  className="cart-icon"
+  onClick={() => document.getElementById("panier")?.scrollIntoView({ behavior: "smooth" })}
+>
+  🛒 {cartCount}
+</button>
       </header><nav className="main-nav">
   <button className="categories-button">☰ Toutes les catégories</button>
   <a href="#accueil">Accueil</a>
