@@ -358,7 +358,7 @@ const filteredProducts = products.filter((product) => {
 </nav>
 
       <main>
-        <section className="hero">
+        <section id="accueil" className="hero">
   <div className="hero-content">
     <span className="hero-badge">🇸🇳 Boutique en ligne au Sénégal</span>
 
