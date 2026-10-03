@@ -733,3 +733,13 @@ footer strong {
     gap: 25px;
   }
     }
+.products-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  scroll-behavior: smooth;
+}
+
+.product-card {
+  flex: 0 0 280px;
+}
