@@ -743,3 +743,17 @@ footer strong {
 .product-card {
   flex: 0 0 280px;
 }
+/* Défilement horizontal des produits */
+.products,
+.product-grid {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  gap: 20px;
+  scroll-behavior: smooth;
+}
+
+.products > *,
+.product-grid > * {
+  flex: 0 0 280px;
+  }
