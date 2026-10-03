@@ -8,7 +8,91 @@ const SUPABASE_ANON_KEY =
   "sb_publishable_fHoX_HKWpVS-AsC-Q63xKA_7U3qi8Wn";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+function ProductGallery({ product }) {
+  const images =
+    Array.isArray(product.image_urls) && product.image_urls.length > 0
+      ? product.image_urls
+      : [product.image_url || product.image].filter(Boolean);
 
+  const [current, setCurrent] = useState(0);
+
+  if (images.length === 0) {
+    return (
+      <div className="product-gallery">
+        <div className="no-image">Aucune photo</div>
+      </div>
+    );
+  }
+
+  const previousImage = () => {
+    setCurrent((index) =>
+      index === 0 ? images.length - 1 : index - 1
+    );
+  };
+
+  const nextImage = () => {
+    setCurrent((index) =>
+      index === images.length - 1 ? 0 : index + 1
+    );
+  };
+
+  return (
+    <div className="product-gallery">
+      <div className="gallery-main">
+        <img
+          src={images[current]}
+          alt={`${product.name} - photo ${current + 1}`}
+        />
+
+        {images.length > 1 && (
+          <>
+            <button
+              className="gallery-arrow gallery-prev"
+              onClick={previousImage}
+            >
+              ‹
+            </button>
+
+            <button
+              className="gallery-arrow gallery-next"
+              onClick={nextImage}
+            >
+              ›
+            </button>
+          </>
+        )}
+      </div>
+
+      {images.length > 1 && (
+        <div className="gallery-thumbnails">
+          {images.map((image, index) => (
+            <button
+              key={image + index}
+              className={`gallery-thumbnail ${
+                current === index ? "active" : ""
+              }`}
+              onClick={() => setCurrent(index)}
+            >
+              <img src={image} alt={`Photo ${index + 1}`} />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {images.length > 1 && (
+        <div className="gallery-dots">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              className={current === index ? "active" : ""}
+              onClick={() => setCurrent(index)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 function money(value) {
   return (
     new Intl.NumberFormat("fr-FR").format(Number(value || 0)) +
@@ -518,17 +602,7 @@ const filteredProducts = products.filter((product) => {
             <div className="products-grid">
               {filteredProducts.map((product) => (
                 <article className="product-card" key={product.id}>
-                  <div className="product-gallery">
-  <img
-    src={
-      product.image_url ||
-      product.image ||
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80"
-    }
-    alt={product.name || "Produit Idzoshop"}
-    loading="lazy"
-  />
-</div>
+                  <ProductGallery product={product} />
 
                   <div className="product-info">
                     <h3>{product.name}</h3>
