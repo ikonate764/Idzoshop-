@@ -760,18 +760,16 @@ footer strong {
 /* ===== GALERIE PRODUIT ===== */
 
 .product-gallery {
-  position: relative;
   width: 100%;
+  background: #fff;
   overflow: hidden;
-  padding: 0;
-  background: #f3f6f4;
 }
 
 .gallery-main {
   position: relative;
   width: 100%;
-  overflow: hidden;
   aspect-ratio: 1 / 1;
+  overflow: hidden;
   background: #fff;
 }
 
@@ -786,11 +784,9 @@ footer strong {
   min-width: 100%;
   width: 100%;
   height: 100%;
-  flex: 0 0 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
 }
 
 .gallery-slide img {
@@ -804,26 +800,26 @@ footer strong {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 42px;
-  height: 42px;
-  border: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
   border-radius: 50%;
-  background: #0f8f5f;
+  background: rgba(0, 0, 0, 0.55);
   color: white;
-  font-size: 30px;
-  line-height: 1;
-  z-index: 5;
+  font-size: 32px;
+  z-index: 10;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .gallery-prev {
-  left: 10px;
+  left: 12px;
 }
 
 .gallery-next {
-  right: 10px;
+  right: 12px;
 }
 
 .gallery-dots {
@@ -833,14 +829,14 @@ footer strong {
   transform: translateX(-50%);
   display: flex;
   gap: 7px;
-  z-index: 5;
+  z-index: 10;
 }
 
 .gallery-dots button {
   width: 9px;
   height: 9px;
   padding: 0;
-  border: none;
+  border: 0;
   border-radius: 50%;
   background: #ccc;
 }
@@ -849,33 +845,9 @@ footer strong {
   background: #0f8f5f;
 }
 
+/* Cacher les miniatures */
 .gallery-thumbnails {
-  display: flex;
-  gap: 8px;
-  padding: 10px;
-  overflow-x: auto;
-}
-
-.gallery-thumbnail {
-  flex: 0 0 64px;
-  width: 64px;
-  height: 64px;
-  padding: 3px;
-  border: 2px solid transparent;
-  border-radius: 9px;
-  background: white;
-  overflow: hidden;
-}
-
-.gallery-thumbnail.active {
-  border-color: #0f8f5f;
-}
-
-.gallery-thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  display: none;
 }
 
 @media (max-width: 700px) {
