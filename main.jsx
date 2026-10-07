@@ -15,6 +15,7 @@ function ProductGallery({ product }) {
       : [product.image_url || product.image].filter(Boolean);
 
   const [current, setCurrent] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
 
   if (images.length === 0) {
     return (
@@ -36,30 +37,90 @@ function ProductGallery({ product }) {
     );
   };
 
+  const handleTouchStart = (event) => {
+    setTouchStart(event.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (event) => {
+    if (touchStart === null) return;
+
+    const distance =
+      event.changedTouches[0].clientX - touchStart;
+
+    if (Math.abs(distance) > 50) {
+      if (distance < 0) {
+        nextImage();
+      } else {
+        previousImage();
+      }
+    }
+
+    setTouchStart(null);
+  };
+
   return (
-    <div className="product-gallery">
+    <div
+      className="product-gallery"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className="gallery-main">
-        <img
-          src={images[current]}
-          alt={`${product.name} - photo ${current + 1}`}
-        />
+
+        <div
+          className="gallery-track"
+          style={{
+            transform: `translateX(-${current * 100}%)`,
+          }}
+        >
+          {images.map((image, index) => (
+            <div
+              className="gallery-slide"
+              key={image + index}
+            >
+              <img
+                src={image}
+                alt={`${product.name} - photo ${index + 1}`}
+              />
+            </div>
+          ))}
+        </div>
 
         {images.length > 1 && (
           <>
             <button
+              type="button"
               className="gallery-arrow gallery-prev"
               onClick={previousImage}
+              aria-label="Photo précédente"
             >
               ‹
             </button>
 
             <button
+              type="button"
               className="gallery-arrow gallery-next"
               onClick={nextImage}
+              aria-label="Photo suivante"
             >
               ›
             </button>
           </>
+        )}
+
+        {images.length > 1 && (
+          <div className="gallery-dots">
+            {images.map((_, index) => (
+              <button
+                type="button"
+                key={index}
+                className={
+                  current === index ? "active" : ""
+                }
+                onClick={() => setCurrent(index)}
+                aria-label={`Afficher la photo ${index + 1}`}
+              />
+            ))}
+          </div>
         )}
       </div>
 
@@ -67,26 +128,19 @@ function ProductGallery({ product }) {
         <div className="gallery-thumbnails">
           {images.map((image, index) => (
             <button
+              type="button"
               key={image + index}
               className={`gallery-thumbnail ${
                 current === index ? "active" : ""
               }`}
               onClick={() => setCurrent(index)}
+              aria-label={`Afficher la photo ${index + 1}`}
             >
-              <img src={image} alt={`Photo ${index + 1}`} />
+              <img
+                src={image}
+                alt=""
+              />
             </button>
-          ))}
-        </div>
-      )}
-
-      {images.length > 1 && (
-        <div className="gallery-dots">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              className={current === index ? "active" : ""}
-              onClick={() => setCurrent(index)}
-            />
           ))}
         </div>
       )}
