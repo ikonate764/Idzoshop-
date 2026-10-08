@@ -319,11 +319,7 @@ async function updateOrderStatus(orderId, status) {
   loadOrders();
 }
 
-async function loadOrders() {
-  const { data, error } = await supabase
-    .from("orders")
-    .select("*")
-    .order("created_at", { ascending: false });
+
 
   if (error) {
     setMessage("Erreur lors du chargement des commandes : " + error.message);
