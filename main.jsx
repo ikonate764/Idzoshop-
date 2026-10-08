@@ -897,10 +897,7 @@ const filteredProducts = products.filter((product) => {
         </div>
       )}
 
-      <footer>
-        <p>© {new Date().getFullYear()} Idzoshop</p>
-        <p>Commerce en ligne au Sénégal 🇸🇳</p>
-      </footer>
+      
     </div>
   );
 }
