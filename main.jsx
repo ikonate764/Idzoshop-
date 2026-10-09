@@ -413,12 +413,7 @@ async function handleOrder() {
   );
   }
 
-  const normalizeCategory = (value = "") =>
-  value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim();
+  
 
 const normalizeCategory = (value = "") =>
 String(value)
