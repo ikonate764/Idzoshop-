@@ -420,14 +420,24 @@ async function handleOrder() {
     .toLowerCase()
     .trim();
 
-const filteredProducts = products.filter((product) => {
-  if (selectedCategory !== "") {
-    const selected = normalizeCategory(selectedCategory);
-    const slug = normalizeCategory(product.categories?.slug);
-    const name = normalizeCategory(product.categories?.name);
+const normalizeCategory = (value = "") =>
+String(value)
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
+.replace(/&/g, " ")
+.replace(/[^a-z0-9]+/g, "")
+.trim();
 
-    return slug === selected || name === selected;
-  }
+const filteredProducts = products.filter((product) => {
+if (!selectedCategory) return true;
+
+const selected = normalizeCategory(selectedCategory);
+const slug = normalizeCategory(product.categories?.slug);
+const name = normalizeCategory(product.categories?.name);
+
+return slug === selected || name === selected;
+});
 
   const text = search.toLowerCase();
 
