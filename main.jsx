@@ -340,7 +340,128 @@ async function loadCategories() {
 
     setLoading(false);
   }
+function resetProductForm() {
+  setEditingProduct(null);
+  setProductName("");
+  setProductDescription("");
+  setProductPrice("");
+  setProductStock("");
+  setProductCategory("");
+  setProductImage("");
+}
 
+function editProduct(product) {
+  setEditingProduct(product);
+  setProductName(product.name || "");
+  setProductDescription(product.description || "");
+  setProductPrice(String(product.price ?? ""));
+  setProductStock(String(product.stock ?? ""));
+  setProductCategory(product.category_id || "");
+  setProductImage(product.image_url || "");
+  setShowProductManager(true);
+}
+
+async function saveProduct(event) {
+  event.preventDefault();
+
+  if (!user || !profile) {
+    setMessage("Connecte-toi pour gérer les produits.");
+    return;
+  }
+
+  if (profile.role !== "admin" && !myStore) {
+    setMessage("Tu dois posséder une boutique pour ajouter des produits.");
+    return;
+  }
+
+  if (!productName.trim() || Number(productPrice) <= 0) {
+    setMessage("Entre un nom de produit et un prix valide.");
+    return;
+  }
+
+  const stock = Number(productStock);
+
+  if (!Number.isInteger(stock) || stock < 0) {
+    setMessage("Le stock doit être un nombre entier positif ou nul.");
+    return;
+  }
+
+  setProductSaving(true);
+  setMessage("");
+
+  const values = {
+    name: productName.trim(),
+    slug: productName
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, ""),
+    description: productDescription.trim() || null,
+    price: Number(productPrice),
+    stock,
+    category_id: productCategory || null,
+    image_url: productImage.trim() || null,
+    active: true,
+    updated_at: new Date().toISOString(),
+  };
+
+  if (profile.role !== "admin") {
+    values.store_id = myStore.id;
+    values.seller_id = user.id;
+  }
+
+  let result;
+
+  if (editingProduct) {
+    result = await supabase
+      .from("products")
+      .update(values)
+      .eq("id", editingProduct.id);
+  } else {
+    result = await supabase
+      .from("products")
+      .insert(values);
+  }
+
+  if (result.error) {
+    setMessage("Erreur lors de l'enregistrement : " + result.error.message);
+    setProductSaving(false);
+    return;
+  }
+
+  setMessage(
+    editingProduct
+      ? "Produit modifié avec succès."
+      : "Produit ajouté avec succès."
+  );
+
+  resetProductForm();
+  await loadProducts();
+  setProductSaving(false);
+}
+
+async function deleteProduct(product) {
+  const confirmed = window.confirm(
+    `Veux-tu vraiment supprimer le produit « ${product.name} » ?`
+  );
+
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", product.id);
+
+  if (error) {
+    setMessage("Erreur lors de la suppression : " + error.message);
+    return;
+  }
+
+  setMessage("Produit supprimé.");
+  await loadProducts();
+}
   async function handleAuth(e) {
     e.preventDefault();
 
