@@ -321,13 +321,7 @@ async function updateOrderStatus(orderId, status) {
 
 
 
-  if (error) {
-    setMessage("Erreur lors du chargement des commandes : " + error.message);
-    return;
-  }
-
-  setOrders(data || []);
-}
+  
 
 async function handleOrder() {
   if (!user) {
