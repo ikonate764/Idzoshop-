@@ -176,7 +176,19 @@ const [customerPhone, setCustomerPhone] = useState("");
 const [deliveryAddress, setDeliveryAddress] = useState("");
 const [city, setCity] = useState("");
 const [orderLoading, setOrderLoading] = useState(false);const [orders, setOrders] = useState([]);
-const [showAdmin, setShowAdmin] = useState(false);async function loadOrders() {
+const [showAdmin, setShowAdmin] = useState(false);
+  const [profile, setProfile] = useState(null);
+const [categories, setCategories] = useState([]);
+const [myStore, setMyStore] = useState(null);
+const [showProductManager, setShowProductManager] = useState(false);
+const [editingProduct, setEditingProduct] = useState(null);
+const [productName, setProductName] = useState("");
+const [productDescription, setProductDescription] = useState("");
+const [productPrice, setProductPrice] = useState("");
+const [productStock, setProductStock] = useState("");
+const [productCategory, setProductCategory] = useState("");
+const [productImage, setProductImage] = useState("");
+const [productSaving, setProductSaving] = useState(false);async function loadOrders() {
   const { data, error } = await supabase
     .from("orders")
     .select("*")
