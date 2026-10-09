@@ -171,11 +171,13 @@ const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(true);
   const [authLoading, setAuthLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");const [customerName, setCustomerName] = useState("");
+  const [error, setError] = useState("");
+  const [customerName, setCustomerName] = useState("");
 const [customerPhone, setCustomerPhone] = useState("");
 const [deliveryAddress, setDeliveryAddress] = useState("");
 const [city, setCity] = useState("");
-const [orderLoading, setOrderLoading] = useState(false);const [orders, setOrders] = useState([]);
+const [orderLoading, setOrderLoading] = useState(false);
+  const [orders, setOrders] = useState([]);
 const [showAdmin, setShowAdmin] = useState(false);
   const [profile, setProfile] = useState(null);
 const [categories, setCategories] = useState([]);
@@ -203,8 +205,34 @@ const [productSaving, setProductSaving] = useState(false);async function loadOrd
 }
 
   useEffect(() => {
-    loadProducts();
-    loadSession();
+  loadProducts();
+  loadCategories();
+  loadSession();
+
+  const savedCart = localStorage.getItem("idzoshop_cart");
+
+  if (savedCart) {
+    try {
+      setCart(JSON.parse(savedCart));
+    } catch {
+      setCart([]);
+    }
+  }
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    const currentUser = session?.user || null;
+    setUser(currentUser);
+
+    if (!currentUser) {
+      setProfile(null);
+      setMyStore(null);
+    }
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
 
     const savedCart = localStorage.getItem("idzoshop_cart");
 
