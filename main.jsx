@@ -793,7 +793,7 @@ product.categories?.name?.toLowerCase().includes(text)
 
             <button className="logout-button" onClick={logout}>
               Se déconnecter
-            </button>{user?.email === "idzoshop50@gmail.com" && (
+            </button>{profile?.role === "admin" && (
   <button
     className="logout-button"
     onClick={() => {
