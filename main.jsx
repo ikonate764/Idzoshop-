@@ -233,6 +233,14 @@ const [productSaving, setProductSaving] = useState(false);async function loadOrd
 
   return () => subscription.unsubscribe();
 }, []);
+  useEffect(() => {
+  if (user) {
+    loadProfile();
+  } else {
+    setProfile(null);
+    setMyStore(null);
+  }
+}, [user]);
 
     const savedCart = localStorage.getItem("idzoshop_cart");
 
