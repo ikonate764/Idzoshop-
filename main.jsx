@@ -425,22 +425,28 @@ String(value)
 .trim();
 
 const filteredProducts = products.filter((product) => {
-if (!selectedCategory) return true;
-
+if (selectedCategory) {
 const selected = normalizeCategory(selectedCategory);
 const slug = normalizeCategory(product.categories?.slug);
 const name = normalizeCategory(product.categories?.name);
 
-return slug === selected || name === selected;
-});
+const matchesCategory =
+  slug === selected ||
+  name === selected ||
+  slug.includes(selected) ||
+  name.includes(selected);
 
-  const text = search.toLowerCase();
+if (!matchesCategory) return false;
 
-  return (
-    product.name?.toLowerCase().includes(text) ||
-    product.description?.toLowerCase().includes(text) ||
-    product.categories?.name?.toLowerCase().includes(text)
-  );
+}
+
+const text = search.toLowerCase();
+
+return (
+product.name?.toLowerCase().includes(text) ||
+product.description?.toLowerCase().includes(text) ||
+product.categories?.name?.toLowerCase().includes(text)
+);
 });
   
 
