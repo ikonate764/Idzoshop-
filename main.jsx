@@ -236,7 +236,56 @@ const [productSaving, setProductSaving] = useState(false);async function loadOrd
 
     setUser(session?.user || null);
   }
+async function loadProfile() {
+  if (!user) {
+    setProfile(null);
+    setMyStore(null);
+    return;
+  }
 
+  const { data: profileData, error: profileError } =
+    await supabase
+      .from("profiles")
+      .select("id, full_name, role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+  if (profileError) {
+    setMessage("Erreur de profil : " + profileError.message);
+    return;
+  }
+
+  setProfile(profileData);
+
+  const { data: storeData, error: storeError } =
+    await supabase
+      .from("stores")
+      .select("id, name, owner_id, status")
+      .eq("owner_id", user.id)
+      .maybeSingle();
+
+  if (storeError) {
+    setMessage("Erreur de boutique : " + storeError.message);
+    return;
+  }
+
+  setMyStore(storeData);
+}
+
+async function loadCategories() {
+  const { data, error } = await supabase
+    .from("categories")
+    .select("id, name, slug")
+    .eq("active", true)
+    .order("name");
+
+  if (error) {
+    setMessage("Erreur de catégories : " + error.message);
+    return;
+  }
+
+  setCategories(data || []);
+    }
   async function loadProducts() {
     setLoading(true);
 
