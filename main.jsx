@@ -369,9 +369,29 @@ async function saveProduct(event) {
     return;
   }
 
-  if (profile.role !== "admin" && !myStore) {
-    setMessage("Tu dois posséder une boutique pour ajouter des produits.");
+  if (editingProduct) {
+  if (
+    profile.role !== "admin" &&
+    editingProduct.store_id !== myStore?.id
+  ) {
+    setMessage(
+      "Tu peux modifier uniquement les produits de ta boutique."
+    );
+    setProductSaving(false);
     return;
+  }
+} else {
+  if (!myStore?.id) {
+    setMessage(
+      "Aucune boutique associée à ton compte. Crée d'abord ta boutique."
+    );
+    setProductSaving(false);
+    return;
+  }
+
+  values.store_id = myStore.id;
+  values.seller_id =
+    profile.role === "seller" ? user.id : myStore.owner_id;
   }
 
   if (!productName.trim() || Number(productPrice) <= 0) {
