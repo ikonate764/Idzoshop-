@@ -242,24 +242,6 @@ const [productSaving, setProductSaving] = useState(false);async function loadOrd
   }
 }, [user]);
 
-    const savedCart = localStorage.getItem("idzoshop_cart");
-
-    if (savedCart) {
-      try {
-        setCart(JSON.parse(savedCart));
-      } catch {
-        setCart([]);
-      }
-    }
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("idzoshop_cart", JSON.stringify(cart));
