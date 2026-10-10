@@ -818,7 +818,130 @@ product.categories?.name?.toLowerCase().includes(text)
   </button>
 )}
           </section>
-        )}{showAdmin && (
+        )}{showProductManager && (
+  <section className="account-card">
+    <h2>🛍️ Gestion des produits</h2>
+
+    <button
+      type="button"
+      className="logout-button"
+      onClick={() => {
+        setShowProductManager(false);
+        resetProductForm();
+      }}
+    >
+      Fermer
+    </button>
+
+    <form onSubmit={saveProduct}>
+      <h3>
+        {editingProduct ? "Modifier le produit" : "Ajouter un produit"}
+      </h3>
+
+      <input
+        type="text"
+        placeholder="Nom du produit"
+        value={productName}
+        onChange={(e) => setProductName(e.target.value)}
+        required
+      />
+
+      <textarea
+        placeholder="Description du produit"
+        value={productDescription}
+        onChange={(e) => setProductDescription(e.target.value)}
+      />
+
+      <input
+        type="number"
+        placeholder="Prix en FCFA"
+        value={productPrice}
+        onChange={(e) => setProductPrice(e.target.value)}
+        min="1"
+        required
+      />
+
+      <input
+        type="number"
+        placeholder="Quantité en stock"
+        value={productStock}
+        onChange={(e) => setProductStock(e.target.value)}
+        min="0"
+        step="1"
+        required
+      />
+
+      <select
+        value={productCategory}
+        onChange={(e) => setProductCategory(e.target.value)}
+      >
+        <option value="">Choisir une catégorie</option>
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="url"
+        placeholder="Lien public de la photo"
+        value={productImage}
+        onChange={(e) => setProductImage(e.target.value)}
+      />
+
+      <button type="submit" disabled={productSaving}>
+        {productSaving
+          ? "Enregistrement..."
+          : editingProduct
+            ? "Enregistrer les modifications"
+            : "Ajouter le produit"}
+      </button>
+
+      {editingProduct && (
+        <button
+          type="button"
+          className="logout-button"
+          onClick={resetProductForm}
+        >
+          Annuler la modification
+        </button>
+      )}
+    </form>
+
+    <hr />
+
+    <h3>Produits existants</h3>
+
+    {products.length === 0 ? (
+      <p>Aucun produit chargé.</p>
+    ) : (
+      products.map((product) => (
+        <div className="order-card" key={product.id}>
+          <strong>{product.name}</strong>
+          <p>{money(product.price)}</p>
+          <p>Stock : {product.stock}</p>
+
+          <button
+            type="button"
+            className="logout-button"
+            onClick={() => editProduct(product)}
+          >
+            ✏️ Modifier
+          </button>
+
+          <button
+            type="button"
+            className="delete-button"
+            onClick={() => deleteProduct(product)}
+          >
+            🗑️ Supprimer
+          </button>
+        </div>
+      ))
+    )}
+  </section>
+)}{showAdmin && (
   <section className="account-card">
     <h2>📦 Commandes reçues</h2>
 
