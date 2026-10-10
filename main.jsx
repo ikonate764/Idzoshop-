@@ -804,6 +804,19 @@ product.categories?.name?.toLowerCase().includes(text)
     📦 Voir les commandes
   </button>
 )}
+            {(profile?.role === "admin" || profile?.role === "seller") && (
+  <button
+    className="logout-button"
+    onClick={() => {
+      resetProductForm();
+      setShowProductManager(true);
+      loadCategories();
+      loadProducts();
+    }}
+  >
+    🛍️ Gérer les produits
+  </button>
+)}
           </section>
         )}{showAdmin && (
   <section className="account-card">
