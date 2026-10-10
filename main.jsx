@@ -190,7 +190,8 @@ const [productPrice, setProductPrice] = useState("");
 const [productStock, setProductStock] = useState("");
 const [productCategory, setProductCategory] = useState("");
 const [productImage, setProductImage] = useState("");
-const [productSaving, setProductSaving] = useState(false);async function loadOrders() {
+const [productSaving, setProductSaving] = useState(false);
+  async function loadOrders() {
   const { data, error } = await supabase
     .from("orders")
     .select("*")
@@ -371,10 +372,7 @@ async function saveProduct(event) {
     return;
   }
 
-  values.store_id = myStore.id;
-  values.seller_id =
-    profile.role === "seller" ? user.id : myStore.owner_id;
-  }
+  
 
   if (!productName.trim() || Number(productPrice) <= 0) {
     setMessage("Entre un nom de produit et un prix valide.");
