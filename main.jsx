@@ -182,6 +182,10 @@ const [showAdmin, setShowAdmin] = useState(false);
   const [profile, setProfile] = useState(null);
 const [categories, setCategories] = useState([]);
 const [myStore, setMyStore] = useState(null);
+  
+const [deliveryFeeInput, setDeliveryFeeInput] = useState("0");
+const [deliveryFeeSaving, setDeliveryFeeSaving] = useState(false);
+  
 const [showProductManager, setShowProductManager] = useState(false);
 const [editingProduct, setEditingProduct] = useState(null);
 const [productName, setProductName] = useState("");
