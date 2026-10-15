@@ -344,7 +344,7 @@ async function saveDeliveryFee(event) {
   } finally {
     setDeliveryFeeSaving(false);
   }
-  
+    }
 async function loadCategories() {
   const { data, error } = await supabase
     .from("categories")
@@ -841,9 +841,36 @@ product.categories?.name?.toLowerCase().includes(text)
         {user && (
           <section className="account-card">
             <h2>👤 Mon compte</h2>
-            <p>
-              Connecté avec : <strong>{user.email}</strong>
-            </p>
+         <p>Connecté avec : <strong>{user.email}</strong>
+         </p>   
+{(profile?.role === "admin" || profile?.role === "seller") &&
+  myStore?.id && (
+    <form onSubmit={saveDeliveryFee}>
+      <h3>🚚 Frais de livraison</h3>
+      <label htmlFor="deliveryFee">
+        Tarif de livraison (FCFA)
+      </label>
+      <input
+        id="deliveryFee"
+        type="number"
+        min="0"
+        step="1"
+        value={deliveryFeeInput}
+        onChange={(e) => setDeliveryFeeInput(e.target.value)}
+        required
+      />
+      <button
+        type="submit"
+        className="logout-button"
+        disabled={deliveryFeeSaving}
+      >
+        {deliveryFeeSaving
+          ? "Enregistrement..."
+          : "Enregistrer les frais"}
+      </button>
+    </form>
+  )}
+            
 
             <button className="logout-button" onClick={logout}>
               Se déconnecter
