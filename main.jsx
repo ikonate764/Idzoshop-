@@ -452,26 +452,21 @@ async function saveProduct(event) {
   }
 
   if (editingProduct) {
-  if (
-    profile.role !== "admin" &&
-    editingProduct.store_id !== myStore?.id
-  ) {
-    setMessage(
-      "Tu peux modifier uniquement les produits de ta boutique."
-    );
-    setProductSaving(false);
-    return;
-  }
-} else {
-  if (!myStore?.id) {
+    if (
+      profile.role !== "admin" &&
+      editingProduct.store_id !== myStore?.id
+    ) {
+      setMessage(
+        "Tu peux modifier uniquement les produits de ta boutique."
+      );
+      return;
+    }
+  } else if (!myStore?.id && profile.role !== "admin") {
     setMessage(
       "Aucune boutique associée à ton compte. Crée d'abord ta boutique."
     );
-    setProductSaving(false);
     return;
   }
-
-  
 
   if (!productName.trim() || Number(productPrice) <= 0) {
     setMessage("Entre un nom de produit et un prix valide.");
@@ -488,59 +483,65 @@ async function saveProduct(event) {
   setProductSaving(true);
   setMessage("");
 
-  const values = {
-    name: productName.trim(),
-    slug: productName
-      .trim()
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, ""),
-    description: productDescription.trim() || null,
-    price: Number(productPrice),
-    stock,
-    category_id: productCategory || null,
-    image_url: productImage.trim() || null,
-    active: true,
-    updated_at: new Date().toISOString(),
-  };
+  try {
+    const values = {
+      name: productName.trim(),
+      slug: productName
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, ""),
+      description: productDescription.trim() || null,
+      price: Number(productPrice),
+      stock,
+      category_id: productCategory || null,
+      image_url: productImage.trim() || null,
+      active: true,
+      updated_at: new Date().toISOString(),
+    };
 
-  if (profile.role !== "admin") {
-    values.store_id = myStore.id;
-    values.seller_id = user.id;
-  }
+    if (profile.role !== "admin") {
+      values.store_id = myStore.id;
+      values.seller_id = user.id;
+    }
 
-  let result;
+    let result;
 
-  if (editingProduct) {
-    result = await supabase
-      .from("products")
-      .update(values)
-      .eq("id", editingProduct.id);
-  } else {
-    result = await supabase
-      .from("products")
-      .insert(values);
-  }
+    if (editingProduct) {
+      result = await supabase
+        .from("products")
+        .update(values)
+        .eq("id", editingProduct.id);
+    } else {
+      result = await supabase
+        .from("products")
+        .insert(values);
+    }
 
-  if (result.error) {
-    setMessage("Erreur lors de l'enregistrement : " + result.error.message);
+    if (result.error) {
+      setMessage(
+        "Erreur lors de l'enregistrement : " + result.error.message
+      );
+      return;
+    }
+
+    setMessage(
+      editingProduct
+        ? "Produit modifié avec succès."
+        : "Produit ajouté avec succès."
+    );
+
+    resetProductForm();
+    await loadProducts();
+  } catch (err) {
+    setMessage("Une erreur inattendue est survenue.");
+    console.error(err);
+  } finally {
     setProductSaving(false);
-    return;
   }
-
-  setMessage(
-    editingProduct
-      ? "Produit modifié avec succès."
-      : "Produit ajouté avec succès."
-  );
-
-  resetProductForm();
-  await loadProducts();
-  setProductSaving(false);
 }
-
 async function deleteProduct(product) {
   const confirmed = window.confirm(
     `Veux-tu vraiment supprimer le produit « ${product.name} » ?`
