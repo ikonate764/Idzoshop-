@@ -283,7 +283,7 @@ async function loadProfile() {
   const { data: storeData, error: storeError } =
     await supabase
       .from("stores")
-      .select("id, name, owner_id, status")
+      .select("id, name, owner_id, status, delivery_fee")
       .eq("owner_id", user.id)
       .maybeSingle();
 
@@ -293,6 +293,7 @@ async function loadProfile() {
   }
 
   setMyStore(storeData);
+  setDeliveryFeeInput(String(storeData?.delivery_fee ?? 0));
 }
 
 async function loadCategories() {
