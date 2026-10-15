@@ -296,6 +296,55 @@ async function loadProfile() {
   setDeliveryFeeInput(String(storeData?.delivery_fee ?? 0));
 }
 
+async function saveDeliveryFee(event) {
+  event.preventDefault();
+
+  if (!user || !myStore?.id) {
+    setMessage("Aucune boutique associée à ce compte.");
+    return;
+  }
+
+  const fee = Number(deliveryFeeInput);
+
+  if (!Number.isSafeInteger(fee) || fee < 0) {
+    setMessage("Entre un montant entier supérieur ou égal à 0 FCFA.");
+    return;
+  }
+
+  setDeliveryFeeSaving(true);
+  setMessage("");
+
+  try {
+    const { data, error } = await supabase
+      .from("stores")
+      .update({
+        delivery_fee: fee,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", myStore.id)
+      .eq("owner_id", user.id)
+      .select("id, name, owner_id, status, delivery_fee")
+      .maybeSingle();
+
+    if (error) {
+      setMessage("Erreur d'enregistrement : " + error.message);
+      return;
+    }
+
+    if (!data) {
+      setMessage(
+        "Tarif non confirmé. Vérifie que ta boutique est active et que tu en es le propriétaire."
+      );
+      return;
+    }
+
+    setMyStore(data);
+    setDeliveryFeeInput(String(data.delivery_fee));
+    setMessage("Frais de livraison enregistrés.");
+  } finally {
+    setDeliveryFeeSaving(false);
+  }
+  
 async function loadCategories() {
   const { data, error } = await supabase
     .from("categories")
