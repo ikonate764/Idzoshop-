@@ -185,7 +185,8 @@ const [myStore, setMyStore] = useState(null);
   
 const [deliveryFeeInput, setDeliveryFeeInput] = useState("0");
 const [deliveryFeeSaving, setDeliveryFeeSaving] = useState(false);
-  
+ const [cartDeliveryFee, setCartDeliveryFee] = useState(0);
+const [cartDeliveryLoading, setCartDeliveryLoading] = useState(false); 
 const [showProductManager, setShowProductManager] = useState(false);
 const [editingProduct, setEditingProduct] = useState(null);
 const [productName, setProductName] = useState("");
@@ -252,6 +253,50 @@ const [productSaving, setProductSaving] = useState(false);
     localStorage.setItem("idzoshop_cart", JSON.stringify(cart));
   }, [cart]);
 
+useEffect(() => {
+  let cancelled = false;
+
+  async function loadCartDeliveryFee() {
+    if (cart.length === 0) {
+      setCartDeliveryFee(0);
+      return;
+    }
+
+    const storeId = cart[0].store_id;
+
+    if (!storeId || cart.some((item) => item.store_id !== storeId)) {
+      setCartDeliveryFee(0);
+      return;
+    }
+
+    setCartDeliveryLoading(true);
+
+    const { data, error } = await supabase
+      .from("stores")
+      .select("delivery_fee")
+      .eq("id", storeId)
+      .eq("status", "active")
+      .maybeSingle();
+
+    if (cancelled) return;
+
+    if (error || !data) {
+      setCartDeliveryFee(0);
+      setMessage("Impossible de récupérer les frais de livraison de cette boutique.");
+    } else {
+      setCartDeliveryFee(Number(data.delivery_fee || 0));
+    }
+
+    setCartDeliveryLoading(false);
+  }
+
+  loadCartDeliveryFee();
+
+  return () => {
+    cancelled = true;
+  };
+}, [cart]);
+    
   async function loadSession() {
     const {
       data: { session },
@@ -1201,9 +1246,21 @@ product.categories?.name?.toLowerCase().includes(text)
             ))}
 
             <div className="cart-total">
-              <strong>Total</strong>
-              <strong>{money(cartTotal)}</strong>
-            </div><div className="checkout">
+  <strong>Sous-total</strong>
+  <strong>{money(cartTotal)}</strong>
+</div>
+
+<div className="cart-total">
+  <strong>Livraison</strong>
+  <strong>
+    {cartDeliveryLoading ? "Calcul..." : money(cartDeliveryFee)}
+  </strong>
+</div>
+
+<div className="cart-total">
+  <strong>Total à payer</strong>
+  <strong>{money(cartTotal + cartDeliveryFee)}</strong>
+</div><div className="checkout">
   <h3>📦 Passer la commande</h3>
 
   <input
@@ -1236,8 +1293,16 @@ product.categories?.name?.toLowerCase().includes(text)
 
   <p>💵 Paiement à la livraison</p>
 
-  <button type="button" onClick={handleOrder} disabled={orderLoading}>
-  {orderLoading ? "Commande en cours..." : "Commander"}
+  <button
+  type="button"
+  onClick={handleOrder}
+  disabled={orderLoading || cartDeliveryLoading}
+>
+  {orderLoading
+    ? "Commande en cours..."
+    : cartDeliveryLoading
+      ? "Calcul des frais..."
+      : "Commander"}
 </button>
 </div>
           </section>
