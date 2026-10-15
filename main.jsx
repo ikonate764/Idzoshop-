@@ -642,25 +642,42 @@ async function handleOrder() {
   setOrderLoading(false);
       }
 
-  function addToCart(product) {
-    setCart((current) => {
-      const existing = current.find((item) => item.id === product.id);
-
-      if (existing) {
-        return current.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-
-      return [...current, { ...product, quantity: 1 }];
-    });
-
-    setMessage(`${product.name} ajouté au panier 🛒`);
-
-    setTimeout(() => setMessage(""), 2000);
+  
+function addToCart(product) {
+  if (!product.store_id) {
+    setMessage(
+      "Ce produit n'est pas encore associé à une boutique."
+    );
+    return;
   }
+
+  if (
+    cart.length > 0 &&
+    cart.some((item) => item.store_id !== product.store_id)
+  ) {
+    setMessage(
+      "Une commande ne peut contenir que les produits d'une seule boutique. Termine ou vide ton panier avant de choisir une autre boutique."
+    );
+    return;
+  }
+
+  setCart((current) => {
+    const existing = current.find((item) => item.id === product.id);
+
+    if (existing) {
+      return current.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+    }
+
+    return [...current, { ...product, quantity: 1 }];
+  });
+
+  setMessage(`${product.name} ajouté au panier 🛒`);
+}
+  
 
   function removeFromCart(id) {
     setCart((current) => current.filter((item) => item.id !== id));
