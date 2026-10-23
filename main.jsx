@@ -591,8 +591,9 @@ async function deleteProduct(product) {
         password,
         options: {
           data: {
-            full_name: fullName.trim(),
-          },
+  full_name: fullName.trim(),
+  account_type: accountType,
+},
         },
       });
 
@@ -600,15 +601,6 @@ async function deleteProduct(product) {
         setError(error.message);
         return;
       }
-
-      if (accountType === "seller" && data.user) {
-        const { error: requestError } = await supabase
-          .from("seller_requests")
-          .insert({
-            user_id: data.user.id,
-            full_name: fullName.trim(),
-            status: "pending",
-          });
 
         if (requestError) {
           setError(
