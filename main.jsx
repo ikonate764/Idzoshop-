@@ -562,58 +562,103 @@ async function deleteProduct(product) {
   setMessage("Produit supprimé.");
   await loadProducts();
 }
-  async function handleAuth(e) {
-    e.preventDefault();
+   async function handleAuth(e) {
+  e.preventDefault();
 
-    setAuthLoading(true);
-    setError("");
-    setMessage("");
+  setAuthLoading(true);
+  setError("");
+  setMessage("");
 
-    if (!email || !password) {
+  try {
+    if (!email.trim() || !password) {
       setError("Entre ton email et ton mot de passe.");
-      setAuthLoading(false);
       return;
     }
 
     if (authMode === "signup") {
+      if (!fullName.trim()) {
+        setError("Entre ton nom complet.");
+        return;
+      }
+
+      if (!["customer", "seller"].includes(accountType)) {
+        setError("Choisis une option valide.");
+        return;
+      }
+
       const { data, error } = await supabase.auth.signUp({
-        email,
+        email: email.trim(),
         password,
         options: {
           data: {
-            full_name: fullName,
+            full_name: fullName.trim(),
           },
         },
       });
 
       if (error) {
         setError(error.message);
-      } else if (data.session) {
+        return;
+      }
+
+      if (accountType === "seller" && data.user) {
+        const { error: requestError } = await supabase
+          .from("seller_requests")
+          .insert({
+            user_id: data.user.id,
+            full_name: fullName.trim(),
+            status: "pending",
+          });
+
+        if (requestError) {
+          setError(
+            "Le compte a été créé, mais la demande vendeur n'a pas pu être enregistrée : " +
+              requestError.message
+          );
+          return;
+        }
+      }
+
+      if (data.session) {
         setUser(data.user);
         setShowAuth(false);
-        setMessage("Compte créé avec succès 🎉");
-      } else {
+
         setMessage(
-          "Compte créé. Vérifie ton email pour confirmer ton compte."
+          accountType === "seller"
+            ? "Compte créé ! Ta demande de vendeur est en attente de validation."
+            : "Compte créé avec succès 🎉"
+        );
+      } else {
+        setShowAuth(false);
+
+        setMessage(
+          accountType === "seller"
+            ? "Compte créé. Confirme ton email. Ta demande de vendeur est enregistrée si aucun message d'erreur n'est apparu."
+            : "Compte créé. Vérifie ton email pour confirmer ton compte."
         );
       }
     } else {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: email.trim(),
         password,
       });
 
       if (error) {
         setError(error.message);
-      } else {
-        setUser(data.user);
-        setShowAuth(false);
-        setMessage("Connexion réussie 👋");
+        return;
       }
-    }
 
+      setUser(data.user);
+      setShowAuth(false);
+      setMessage("Connexion réussie 👋");
+    }
+  } catch (err) {
+    setError("Une erreur inattendue est survenue. Réessaie.");
+    console.error(err);
+  } finally {
     setAuthLoading(false);
   }
+}
 
   async function logout() {
     await supabase.auth.signOut();
