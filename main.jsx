@@ -167,7 +167,7 @@ const [selectedCategory, setSelectedCategory] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-
+const [accountType, setAccountType] = useState("customer");
   const [loading, setLoading] = useState(true);
   const [authLoading, setAuthLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -1366,14 +1366,40 @@ product.categories?.name?.toLowerCase().includes(text)
             </h2>
 
             <form onSubmit={handleAuth}>
-              {authMode === "signup" && (
-                <input
-                  type="text"
-                  placeholder="Nom complet"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
-              )}
+              
+{authMode === "signup" && (
+  <>
+    <input
+      type="text"
+      placeholder="Nom complet"
+      value={fullName}
+      onChange={(e) => setFullName(e.target.value)}
+      required
+    />
+
+    <label htmlFor="accountType">
+      Je souhaite :
+    </label>
+
+    <select
+      id="accountType"
+      value={accountType}
+      onChange={(e) => setAccountType(e.target.value)}
+      required
+    >
+      <option value="customer">Acheter sur Idzoshop</option>
+      <option value="seller">Demander à devenir vendeur</option>
+    </select>
+
+    {accountType === "seller" && (
+      <p>
+        Ta demande de vente nécessitera une validation
+        avant de pouvoir gérer une boutique.
+      </p>
+    )}
+  </>
+)}
+              
 
               <input
                 type="email"
