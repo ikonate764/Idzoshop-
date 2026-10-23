@@ -564,7 +564,6 @@ async function deleteProduct(product) {
 }
    async function handleAuth(e) {
   e.preventDefault();
-
   setAuthLoading(true);
   setError("");
   setMessage("");
@@ -591,9 +590,9 @@ async function deleteProduct(product) {
         password,
         options: {
           data: {
-  full_name: fullName.trim(),
-  account_type: accountType,
-},
+            full_name: fullName.trim(),
+            account_type: accountType,
+          },
         },
       });
 
@@ -602,32 +601,24 @@ async function deleteProduct(product) {
         return;
       }
 
-        if (requestError) {
-          setError(
-            "Le compte a été créé, mais la demande vendeur n'a pas pu être enregistrée : " +
-              requestError.message
-          );
-          return;
-        }
-      }
+      setShowAuth(false);
 
-      if (data.session) {
-        setUser(data.user);
-        setShowAuth(false);
-
+      if (accountType === "seller") {
         setMessage(
-          accountType === "seller"
-            ? "Compte créé ! Ta demande de vendeur est en attente de validation."
-            : "Compte créé avec succès 🎉"
+          data.session
+            ? "Compte créé. Ta demande vendeur est en attente de validation."
+            : "Compte créé. Confirme ton email. La demande vendeur sera vérifiée dans la base."
         );
       } else {
-        setShowAuth(false);
-
         setMessage(
-          accountType === "seller"
-            ? "Compte créé. Confirme ton email. Ta demande de vendeur est enregistrée si aucun message d'erreur n'est apparu."
+          data.session
+            ? "Compte créé avec succès 🎉"
             : "Compte créé. Vérifie ton email pour confirmer ton compte."
         );
+      }
+
+      if (data.session && data.user) {
+        setUser(data.user);
       }
     } else {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -645,12 +636,12 @@ async function deleteProduct(product) {
       setMessage("Connexion réussie 👋");
     }
   } catch (err) {
-    setError("Une erreur inattendue est survenue. Réessaie.");
     console.error(err);
+    setError("Une erreur inattendue est survenue. Réessaie.");
   } finally {
     setAuthLoading(false);
   }
-}
+   }
 
   async function logout() {
     await supabase.auth.signOut();
