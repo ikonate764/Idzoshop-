@@ -179,6 +179,9 @@ const [city, setCity] = useState("");
 const [orderLoading, setOrderLoading] = useState(false);
   const [orders, setOrders] = useState([]);
 const [showAdmin, setShowAdmin] = useState(false);
+  const [sellerRequests, setSellerRequests] = useState([]);
+const [sellerRequestsLoading, setSellerRequestsLoading] = useState(false);
+const [sellerRequestActionLoading, setSellerRequestActionLoading] = useState(null);
   const [profile, setProfile] = useState(null);
 const [categories, setCategories] = useState([]);
 const [myStore, setMyStore] = useState(null);
@@ -208,6 +211,33 @@ const [productSaving, setProductSaving] = useState(false);
   }
 
   setOrders(data || []);
+}async function loadSellerRequests() {
+  if (profile?.role !== "admin") {
+    setMessage("Accès réservé à l'administrateur.");
+    return;
+  }
+
+  setSellerRequestsLoading(true);
+  setMessage("");
+
+  try {
+    const { data, error } = await supabase
+      .from("seller_requests")
+      .select("*")
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      setMessage(
+        "Erreur lors du chargement des demandes : " + error.message
+      );
+      return;
+    }
+
+    setSellerRequests(data || []);
+  } finally {
+    setSellerRequestsLoading(false);
+  }
 }
 
   useEffect(() => {
