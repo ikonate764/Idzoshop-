@@ -1145,6 +1145,47 @@ product.categories?.name?.toLowerCase().includes(text)
   </section>
 )}{showAdmin && (
   <section className="account-card">
+    <div className="seller-requests-section">
+  <hr />
+  <h2>🧑‍💼 Demandes de vendeurs</h2>
+
+  <button
+    type="button"
+    className="logout-button"
+    onClick={loadSellerRequests}
+    disabled={sellerRequestsLoading}
+  >
+    {sellerRequestsLoading
+      ? "Chargement..."
+      : "Actualiser les demandes"}
+  </button>
+
+  {sellerRequestsLoading ? (
+    <p>Chargement des demandes...</p>
+  ) : sellerRequests.length === 0 ? (
+    <p>Aucune demande en attente.</p>
+  ) : (
+    sellerRequests.map((request) => (
+      <div className="order-card" key={request.id}>
+        <p>
+          <strong>Identifiant du compte :</strong>{" "}
+          {request.user_id}
+        </p>
+
+        <p>
+          <strong>Statut :</strong> En attente
+        </p>
+
+        <p>
+          <strong>Date :</strong>{" "}
+          {request.created_at
+            ? new Date(request.created_at).toLocaleString("fr-FR")
+            : "Non renseignée"}
+        </p>
+      </div>
+    ))
+  )}
+</div>
     <h2>📦 Commandes reçues</h2>
 
     <button
