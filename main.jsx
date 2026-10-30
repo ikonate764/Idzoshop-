@@ -1187,65 +1187,61 @@ product.categories?.name?.toLowerCase().includes(text)
     onClick={loadSellerRequests}
     disabled={sellerRequestsLoading}
   >
-    {sellerRequestsLoading
-      ? "Chargement..."
-      : "Actualiser les demandes"}
-  </button>
+    {sellerRequestsLoading ? (
+  <p>Chargement des demandes...</p>
+) : sellerRequests.length === 0 ? (
+  <p>Aucune demande en attente.</p>
+) : (
+  sellerRequests.map((request) => (
+    <div className="order-card" key={request.id}>
+      <p>
+        <strong>Identifiant du compte :</strong>{" "}
+        {request.user_id}
+      </p>
 
-  {sellerRequestsLoading ? (
-    <p>Chargement des demandes...</p>
-  ) : sellerRequests.length === 0 ? (
-    <p>Aucune demande en attente.</p>
-  ) : (
-    sellerRequests.map((request) => (
-      <div className="order-card" key={request.id}>
-        <p>
-          <strong>Identifiant du compte :</strong>{" "}
-          {request.user_id}
-        </p>
+      <p>
+        <strong>Statut :</strong> En attente
+      </p>
 
-        <p>
-          <strong>Statut :</strong> En attente
-        </p>
+      <p>
+        <strong>Date :</strong>{" "}
+        {request.created_at
+          ? new Date(request.created_at).toLocaleString("fr-FR")
+          : "Non renseignée"}
+      </p>
 
-        <p>
-          <strong>Date :</strong>{" "}
-          {request.created_at
-            ? new Date(request.created_at).toLocaleString("fr-FR")
-            : "Non renseignée"}
-        </p>
+      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+        <button
+          type="button"
+          className="logout-button"
+          disabled={sellerRequestActionLoading !== null}
+          onClick={() => {
+            if (window.confirm("Approuver cette demande ?")) {
+              reviewSellerRequest(request.id, "approved");
+            }
+          }}
+        >
+          {sellerRequestActionLoading === request.id
+            ? "Traitement..."
+            : "✅ Approuver"}
+        </button>
+
+        <button
+          type="button"
+          className="delete-button"
+          disabled={sellerRequestActionLoading !== null}
+          onClick={() => {
+            if (window.confirm("Refuser cette demande ?")) {
+              reviewSellerRequest(request.id, "rejected");
+            }
+          }}
+        >
+          ❌ Refuser
+        </button>
       </div>
-    ))
-    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-  <button
-    type="button"
-    className="logout-button"
-    disabled={sellerRequestActionLoading !== null}
-    onClick={() => {
-      if (window.confirm("Approuver cette demande de vendeur ?")) {
-        reviewSellerRequest(request.id, "approved");
-      }
-    }}
-  >
-    {sellerRequestActionLoading === request.id
-      ? "Traitement..."
-      : "✅ Approuver"}
-  </button>
-
-  <button
-    type="button"
-    className="delete-button"
-    disabled={sellerRequestActionLoading !== null}
-    onClick={() => {
-      if (window.confirm("Refuser cette demande de vendeur ?")) {
-        reviewSellerRequest(request.id, "rejected");
-      }
-    }}
-  >
-    ❌ Refuser
-  </button>
-</div>
-  )}
+    </div>
+  ))
+)}
 </div>
     <h2>📦 Commandes reçues</h2>
 
