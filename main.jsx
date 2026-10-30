@@ -211,7 +211,8 @@ const [productSaving, setProductSaving] = useState(false);
   }
 
   setOrders(data || []);
-}async function loadSellerRequests() {
+}
+  async function loadSellerRequests() {
   if (profile?.role !== "admin") {
     setMessage("Accès réservé à l'administrateur.");
     return;
@@ -239,7 +240,38 @@ const [productSaving, setProductSaving] = useState(false);
     setSellerRequestsLoading(false);
   }
 }
+async function reviewSellerRequest(requestId, decision) {
+  if (profile?.role !== "admin") {
+    setMessage("Action réservée à l'administrateur.");
+    return;
+  }
 
+  setSellerRequestActionLoading(requestId);
+  setMessage("");
+
+  try {
+    const { error } = await supabase.rpc("review_seller_request", {
+      p_request_id: requestId,
+      p_decision: decision,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    await loadSellerRequests();
+
+    setMessage(
+      decision === "approved"
+        ? "Demande approuvée ! Le compte est maintenant vendeur."
+        : "Demande refusée."
+    );
+  } catch (error) {
+    setMessage("Erreur : " + error.message);
+  } finally {
+    setSellerRequestActionLoading(null);
+  }
+}
   useEffect(() => {
   loadProducts();
   loadCategories();
@@ -1184,6 +1216,35 @@ product.categories?.name?.toLowerCase().includes(text)
         </p>
       </div>
     ))
+    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+  <button
+    type="button"
+    className="logout-button"
+    disabled={sellerRequestActionLoading !== null}
+    onClick={() => {
+      if (window.confirm("Approuver cette demande de vendeur ?")) {
+        reviewSellerRequest(request.id, "approved");
+      }
+    }}
+  >
+    {sellerRequestActionLoading === request.id
+      ? "Traitement..."
+      : "✅ Approuver"}
+  </button>
+
+  <button
+    type="button"
+    className="delete-button"
+    disabled={sellerRequestActionLoading !== null}
+    onClick={() => {
+      if (window.confirm("Refuser cette demande de vendeur ?")) {
+        reviewSellerRequest(request.id, "rejected");
+      }
+    }}
+  >
+    ❌ Refuser
+  </button>
+</div>
   )}
 </div>
     <h2>📦 Commandes reçues</h2>
