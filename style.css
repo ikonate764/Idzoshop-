@@ -2,16 +2,18 @@
   box-sizing: border-box;
 }
 
+
 :root {
-  --green: #0f8f5f;
-  --green-dark: #075b3d;
-  --black: #101413;
-  --light: #f5f7f6;
-  --white: #ffffff;
-  --text: #17201d;
-  --muted: #6b7470;
-  --border: #e4e9e6;
+  --green: #C9A227;
+  --green-dark: #8A6A12;
+  --black: #0B0B0B;
+  --light: #F7F5EF;
+  --white: #FFFFFF;
+  --text: #171717;
+  --muted: #6B665C;
+  --border: #E8E0CC;
 }
+
 
 body {
   margin: 0;
