@@ -909,6 +909,78 @@ footer strong {
   cursor: pointer;
 }
 
+/* ===== IDZOSHOP : IDENTITE NOIR ET OR ===== */
+
+body {
+  background: #F7F5EF;
+  color: #171717;
+}
+
+.header {
+  background: #0B0B0B;
+  color: #FFFFFF;
+  border-bottom: 2px solid #C9A227;
+}
+
+.logo {
+  color: #C9A227 !important;
+}
+
+.main-nav {
+  background: #0B0B0B;
+  border-bottom: 1px solid #C9A227;
+}
+
+.main-nav a {
+  color: #FFFFFF;
+}
+
+.main-nav a:hover {
+  color: #C9A227;
+}
+
+.categories-button,
+.cart-icon {
+  background: #C9A227 !important;
+  color: #0B0B0B !important;
+}
+
+.categories-button:hover,
+.add-button:hover {
+  background: #A88318 !important;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(201,162,39,0.22), transparent 35%),
+    linear-gradient(135deg, #171717, #050505) !important;
+  color: #FFFFFF;
+  border: 1px solid #C9A227;
+}
+
+.add-button {
+  background: #C9A227 !important;
+  color: #0B0B0B !important;
+}
+
+.product-info .price {
+  color: #8A6A12 !important;
+}
+
+.footer {
+  background: #0B0B0B !important;
+  border-top: 2px solid #C9A227;
+}
+
+.footer a:hover {
+  color: #C9A227 !important;
+}
+
+.search input:focus {
+  border-color: #C9A227;
+}
+
+
 .add-button:hover {
   opacity: 0.9;
 }
